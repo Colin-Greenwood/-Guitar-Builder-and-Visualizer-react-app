@@ -307,29 +307,39 @@ function validateGuitarRequest() {
 /* Display Validation Feedback */
 /* ================================= */
 
+
 function updateFormFeedback() {
 
     const errors = validateGuitarRequest();
 
+    formErrors.replaceChildren();
+
     if (errors.length > 0) {
 
-        formErrors.textContent = errors
-            .map(function (error) {
-                return "• " + error;
-            })
-            .join("\n");
+        const heading = document.createElement("p");
+        heading.textContent = "Please correct these errors:";
+        formErrors.appendChild(heading);
+
+        const errorList = document.createElement("ul");
+
+        errors.forEach(function (error) {
+            const item = document.createElement("li");
+            item.textContent = error;
+            errorList.appendChild(item);
+        });
+
+        formErrors.appendChild(errorList);
 
         formSuccess.textContent = "";
 
     } else {
 
-        formErrors.textContent = "";
         formSuccess.textContent = "";
-
     }
 
     return errors;
 }
+
 
 
 /* ================================= */
