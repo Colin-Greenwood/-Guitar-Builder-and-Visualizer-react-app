@@ -1,3 +1,4 @@
+```javascript
 /* ================================= */
 /* Custom Guitar Builder */
 /* ================================= */
@@ -6,7 +7,7 @@ console.log("SCRIPT.JS LOADED");
 
 
 /* ================================= */
-/* Select Elements */
+/* Select Guitar Builder Elements */
 /* ================================= */
 
 const guitarName = document.querySelector("#guitarName");
@@ -24,7 +25,6 @@ const guitarPrice = document.querySelector("#guitarPrice");
 const buildMessage = document.querySelector("#buildMessage");
 
 const guitarImage = document.querySelector("#guitarImage");
-
 const partsList = document.querySelector("#partsList");
 
 
@@ -36,29 +36,21 @@ function buildGuitar() {
 
     console.log("BUILD BUTTON CLICKED");
 
-
-    /* Get guitar name */
-
+    // Get guitar name
     let name = guitarName.value.trim();
 
     if (name === "") {
         name = "My Custom Guitar";
     }
 
-
-    /* Get selected guitar parts */
-
+    // Get selected guitar parts
     const body = bodyType.value;
     const pickups = pickupType.value;
     const neck = neckType.value;
     const hardware = hardwareType.value;
     const finish = finishType.value;
 
-
-    /* ================================= */
-    /* Calculate Price */
-    /* ================================= */
-
+    // Calculate individual prices
     const bodyPrice = Number(
         bodyType.options[bodyType.selectedIndex].dataset.price
     );
@@ -89,13 +81,8 @@ function buildGuitar() {
         hardwarePrice +
         finishPrice;
 
-
-    /* ================================= */
-    /* Update Text */
-    /* ================================= */
-
-    guitarDescription.textContent =
-        name + " has been built!";
+    // Update guitar description and price
+    guitarDescription.textContent = name + " has been built!";
 
     guitarPrice.textContent =
         "Estimated Price: $" + totalPrice;
@@ -107,22 +94,12 @@ function buildGuitar() {
         hardware + ", and a " +
         finish + ".";
 
-
-    /* ================================= */
-    /* Add CSS Classes */
-    /* ================================= */
-
+    // Add CSS classes
     buildResult.classList.add("built");
-
     guitarImage.classList.add("guitar-selected");
 
-
-    /* ================================= */
-    /* Create New Elements */
-    /* ================================= */
-
+    // Create the selected-parts list
     partsList.innerHTML = "";
-
 
     const parts = [
         "Body: " + body,
@@ -132,22 +109,13 @@ function buildGuitar() {
         "Finish: " + finish
     ];
 
-
     parts.forEach(function (part) {
-
         const item = document.createElement("li");
-
         item.textContent = part;
-
         partsList.appendChild(item);
-
     });
 
-
-    /* ================================= */
-    /* Update Image Attribute */
-    /* ================================= */
-
+    // Update image attributes
     guitarImage.setAttribute(
         "alt",
         name + " custom electric guitar"
@@ -155,22 +123,18 @@ function buildGuitar() {
 
     guitarImage.dataset.guitar = name;
 
-
     console.log("GUITAR BUILT SUCCESSFULLY");
 }
 
 
 /* ================================= */
-/* Click Event */
+/* Guitar Builder Events */
 /* ================================= */
 
+// Click event
 buildButton.addEventListener("click", buildGuitar);
 
-
-/* ================================= */
-/* Input Event */
-/* ================================= */
-
+// Input event
 guitarName.addEventListener("input", function () {
 
     if (guitarName.value.trim() === "") {
@@ -181,21 +145,273 @@ guitarName.addEventListener("input", function () {
     } else {
 
         buildMessage.textContent =
-            "Your guitar will be named \"" +
-            guitarName.value +
-            "\".";
+            'Your guitar will be named "' +
+            guitarName.value.trim() +
+            '".';
 
+    }
+
+});
+
+// Change event
+finishType.addEventListener("change", function () {
+
+    guitarImage.classList.toggle("guitar-selected");
+
+});
+
+
+/* ================================= */
+/* Homework 7: Form Elements */
+/* ================================= */
+
+const guitarRequestForm =
+    document.querySelector("#guitarRequestForm");
+
+const customerName =
+    document.querySelector("#customerName");
+
+const customerEmail =
+    document.querySelector("#customerEmail");
+
+const guitarStyle =
+    document.querySelector("#guitarStyle");
+
+const guitarBudget =
+    document.querySelector("#guitarBudget");
+
+const guitarDetails =
+    document.querySelector("#guitarDetails");
+
+const contactPermission =
+    document.querySelector("#contactPermission");
+
+const formErrors =
+    document.querySelector("#formErrors");
+
+const formSuccess =
+    document.querySelector("#formSuccess");
+
+let formSubmitted = false;
+
+
+/* ================================= */
+/* Get Selected Request Type */
+/* ================================= */
+
+function getRequestType() {
+
+    const selectedRequest = document.querySelector(
+        'input[name="requestType"]:checked'
+    );
+
+    if (selectedRequest === null) {
+        return "";
+    }
+
+    return selectedRequest.value;
+}
+
+
+/* ================================= */
+/* Validate Form Values */
+/* ================================= */
+
+function validateGuitarRequest() {
+
+    // Read and normalize the values
+    const name = customerName.value.trim();
+    const email = customerEmail.value.trim();
+    const style = guitarStyle.value;
+    const budgetText = guitarBudget.value.trim();
+    const budget = Number(budgetText);
+    const requestType = getRequestType();
+    const details = guitarDetails.value.trim();
+
+    const errors = [];
+
+    // Rule 1: Required values
+    if (name === "") {
+        errors.push("Please enter your name.");
+    }
+
+    if (email === "") {
+        errors.push("Please enter your email address.");
+    }
+
+    if (style === "") {
+        errors.push("Please choose a guitar style.");
+    }
+
+    if (requestType === "") {
+        errors.push("Please select what you need.");
+    }
+
+    if (details === "") {
+        errors.push("Please describe your guitar request.");
+    }
+
+    // Rule 2: Email format
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (email !== "" && !emailPattern.test(email)) {
+        errors.push(
+            "Please enter a valid email address."
+        );
+    }
+
+    // Rule 3: Budget must be a valid number in range
+    if (budgetText === "") {
+
+        errors.push("Please enter your budget.");
+
+    } else if (
+        !Number.isFinite(budget) ||
+        budget < 100 ||
+        budget > 10000
+    ) {
+
+        errors.push(
+            "Your budget must be between $100 and $10,000."
+        );
+
+    } else if (!Number.isInteger(budget)) {
+
+        errors.push(
+            "Please enter a whole-dollar budget."
+        );
+
+    }
+
+    // Rule 4: Details must contain enough information
+    if (details !== "" && details.length < 10) {
+        errors.push(
+            "Please provide at least 10 characters of detail."
+        );
+    }
+
+    // Rule 5: Modification requests need extra explanation
+    if (
+        requestType === "Modification" &&
+        details.length < 20
+    ) {
+        errors.push(
+            "For a guitar modification, describe the changes in at least 20 characters."
+        );
+    }
+
+    return errors;
+}
+
+
+/* ================================= */
+/* Display Validation Feedback */
+/* ================================= */
+
+function updateFormFeedback() {
+
+    const errors = validateGuitarRequest();
+
+    if (errors.length > 0) {
+
+        formErrors.textContent = errors
+            .map(function (error) {
+                return "• " + error;
+            })
+            .join("\n");
+
+        formSuccess.textContent = "";
+
+    } else {
+
+        formErrors.textContent = "";
+        formSuccess.textContent = "";
+
+    }
+
+    return errors;
+}
+
+
+/* ================================= */
+/* Form Input and Change Events */
+/* ================================= */
+
+// Update errors as the user corrects their answers
+guitarRequestForm.addEventListener("input", function () {
+
+    if (formSubmitted) {
+        updateFormFeedback();
+    }
+
+});
+
+guitarRequestForm.addEventListener("change", function () {
+
+    if (formSubmitted) {
+        updateFormFeedback();
     }
 
 });
 
 
 /* ================================= */
-/* Change Event */
+/* Form Submit Event */
 /* ================================= */
 
-finishType.addEventListener("change", function () {
+guitarRequestForm.addEventListener("submit", function (event) {
 
-    guitarImage.classList.toggle("guitar-selected");
+    // Prevent the page from reloading
+    event.preventDefault();
+
+    formSubmitted = true;
+
+    // Validate all the form values
+    const errors = updateFormFeedback();
+
+    // Stop if any errors were found
+    if (errors.length > 0) {
+
+        formErrors.focus();
+
+        return;
+    }
+
+    // Read and clean the final values
+    const name = customerName.value.trim();
+    const email = customerEmail.value.trim();
+    const style = guitarStyle.value;
+    const budget = Number(guitarBudget.value.trim());
+    const requestType = getRequestType();
+    const details = guitarDetails.value.trim();
+    const permissionGranted = contactPermission.checked;
+
+    // Create the clean payload object
+    const guitarRequest = {
+        customerName: name,
+        customerEmail: email,
+        guitarStyle: style,
+        guitarBudget: budget,
+        requestType: requestType,
+        guitarDetails: details,
+        contactPermission: permissionGranted
+    };
+
+    // Display the object in the browser console
+    console.log("Valid Guitar Request:", guitarRequest);
+
+    // Display success feedback on the page
+    formErrors.textContent = "";
+
+    formSuccess.textContent =
+        "Your guitar request is valid! " +
+        "Your form data has been created successfully.";
+
+    // Reset the form after successful validation
+    guitarRequestForm.reset();
+
+    // Reset the submission state
+    formSubmitted = false;
 
 });
+```
