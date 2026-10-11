@@ -9,8 +9,6 @@
     <title>Custom Guitar Builder</title>
 
     <link rel="stylesheet" href="style.css">
-
-    <!-- External JavaScript file -->
     <script src="script.js" defer></script>
 </head>
 
@@ -22,14 +20,13 @@
         <p>Design and create your own custom guitar.</p>
     </header>
 
-
     <!-- Navigation -->
     <nav>
         <a href="#home">Home</a>
         <a href="#builder">Guitar Builder</a>
+        <a href="#request">Custom Request</a>
         <a href="#about">About</a>
     </nav>
-
 
     <main>
 
@@ -53,7 +50,6 @@
 
         </section>
 
-
         <!-- Guitar Builder Section -->
         <section id="builder" class="section-card">
 
@@ -63,11 +59,8 @@
                 Choose your guitar parts below and build your custom guitar.
             </p>
 
-
-            <!-- Guitar Name -->
             <div class="builder-control">
                 <label for="guitarName">Guitar Name:</label>
-
                 <input
                     type="text"
                     id="guitarName"
@@ -76,131 +69,70 @@
                 >
             </div>
 
-
-            <!-- Body -->
             <div class="builder-control">
                 <label for="bodyType">Body:</label>
-
                 <select id="bodyType">
-                    <option value="Stratocaster" data-price="150">
-                        Stratocaster
-                    </option>
-
-                    <option value="Les Paul" data-price="250">
-                        Les Paul
-                    </option>
-
-                    <option value="Telecaster" data-price="175">
-                        Telecaster
-                    </option>
-
-                    <option value="Explorer" data-price="300">
-                        Explorer
-                    </option>
+                    <option value="Stratocaster" data-price="150">Stratocaster</option>
+                    <option value="Les Paul" data-price="250">Les Paul</option>
+                    <option value="Telecaster" data-price="175">Telecaster</option>
+                    <option value="Explorer" data-price="300">Explorer</option>
                 </select>
             </div>
 
-
-            <!-- Pickups -->
             <div class="builder-control">
                 <label for="pickupType">Pickups:</label>
-
                 <select id="pickupType">
                     <option value="Three Single-Coil Pickups" data-price="180">
                         Three Single-Coil Pickups
                     </option>
-
                     <option value="Two Humbuckers" data-price="250">
                         Two Humbuckers
                     </option>
-
                     <option value="Humbucker and Single-Coil" data-price="220">
                         Humbucker and Single-Coil
                     </option>
                 </select>
             </div>
 
-
-            <!-- Neck -->
             <div class="builder-control">
                 <label for="neckType">Neck:</label>
-
                 <select id="neckType">
-                    <option value="Maple Neck" data-price="120">
-                        Maple Neck
-                    </option>
-
-                    <option value="Rosewood Neck" data-price="150">
-                        Rosewood Neck
-                    </option>
-
-                    <option value="Ebony Neck" data-price="200">
-                        Ebony Neck
-                    </option>
+                    <option value="Maple Neck" data-price="120">Maple Neck</option>
+                    <option value="Rosewood Neck" data-price="150">Rosewood Neck</option>
+                    <option value="Ebony Neck" data-price="200">Ebony Neck</option>
                 </select>
             </div>
 
-
-            <!-- Hardware -->
             <div class="builder-control">
                 <label for="hardwareType">Hardware:</label>
-
                 <select id="hardwareType">
-                    <option value="Chrome Hardware" data-price="80">
-                        Chrome Hardware
-                    </option>
-
-                    <option value="Black Hardware" data-price="100">
-                        Black Hardware
-                    </option>
-
-                    <option value="Gold Hardware" data-price="150">
-                        Gold Hardware
-                    </option>
+                    <option value="Chrome Hardware" data-price="80">Chrome Hardware</option>
+                    <option value="Black Hardware" data-price="100">Black Hardware</option>
+                    <option value="Gold Hardware" data-price="150">Gold Hardware</option>
                 </select>
             </div>
 
-
-            <!-- Finish -->
             <div class="builder-control">
                 <label for="finishType">Finish:</label>
-
                 <select id="finishType">
-                    <option value="Black Finish" data-price="100">
-                        Black Finish
-                    </option>
-
-                    <option value="Sunburst Finish" data-price="130">
-                        Sunburst Finish
-                    </option>
-
-                    <option value="White Finish" data-price="100">
-                        White Finish
-                    </option>
-
-                    <option value="Red Finish" data-price="120">
-                        Red Finish
-                    </option>
+                    <option value="Black Finish" data-price="100">Black Finish</option>
+                    <option value="Sunburst Finish" data-price="130">Sunburst Finish</option>
+                    <option value="White Finish" data-price="100">White Finish</option>
+                    <option value="Red Finish" data-price="120">Red Finish</option>
                 </select>
             </div>
 
-
-            <!-- Build Button -->
             <button id="buildButton" type="button">
                 Build My Guitar
             </button>
 
-
-            <!-- Builder Result -->
             <div id="buildResult" class="build-result">
 
                 <h3 id="guitarDescription">
                     Your custom guitar will appear here.
                 </h3>
 
-                <p id="guitarPrice">
-                    Estimated Price: $0
-                </p>
+                <p id="guitarPrice">Estimated Price: $0</p>
 
                 <p id="buildMessage">
                     Choose your parts and click "Build My Guitar."
@@ -208,8 +140,6 @@
 
             </div>
 
-
-            <!-- Dynamically created guitar parts will appear here -->
             <div class="parts-container">
 
                 <h3>Selected Parts</h3>
@@ -222,6 +152,158 @@
 
         </section>
 
+        <!-- Custom Guitar Request Form -->
+        <section id="request" class="section-card">
+
+            <h2>Custom Guitar Request</h2>
+
+            <p>
+                Tell us about the guitar you want to create.
+            </p>
+
+            <form id="guitarRequestForm" novalidate>
+
+                <!-- Name -->
+                <div class="builder-control">
+                    <label for="customerName">Your Name *</label>
+                    <input
+                        type="text"
+                        id="customerName"
+                        name="customerName"
+                        placeholder="Enter your name"
+                        autocomplete="name"
+                        required
+                    >
+                </div>
+
+                <!-- Email -->
+                <div class="builder-control">
+                    <label for="customerEmail">Email Address *</label>
+                    <input
+                        type="email"
+                        id="customerEmail"
+                        name="customerEmail"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        required
+                    >
+                </div>
+
+                <!-- Guitar Style -->
+                <div class="builder-control">
+                    <label for="guitarStyle">Guitar Style *</label>
+                    <select id="guitarStyle" name="guitarStyle" required>
+                        <option value="">Choose a guitar style</option>
+                        <option value="Stratocaster">Stratocaster</option>
+                        <option value="Telecaster">Telecaster</option>
+                        <option value="Les Paul">Les Paul</option>
+                        <option value="Explorer">Explorer</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+
+                <!-- Budget -->
+                <div class="builder-control">
+                    <label for="guitarBudget">Budget in Dollars *</label>
+                    <input
+                        type="number"
+                        id="guitarBudget"
+                        name="guitarBudget"
+                        min="100"
+                        max="10000"
+                        step="1"
+                        placeholder="1200"
+                        required
+                    >
+                    <small>Enter a budget between $100 and $10,000.</small>
+                </div>
+
+                <!-- Request Type -->
+                <fieldset class="builder-control">
+                    <legend>What do you need? *</legend>
+
+                    <label>
+                        <input
+                            type="radio"
+                            name="requestType"
+                            value="New guitar"
+                            required
+                        >
+                        A new custom guitar
+                    </label>
+
+                    <label>
+                        <input
+                            type="radio"
+                            name="requestType"
+                            value="Modification"
+                        >
+                        Modify an existing guitar
+                    </label>
+
+                    <label>
+                        <input
+                            type="radio"
+                            name="requestType"
+                            value="Question"
+                        >
+                        Ask a question
+                    </label>
+                </fieldset>
+
+                <!-- Guitar Details -->
+                <div class="builder-control">
+                    <label for="guitarDetails">
+                        Guitar Details or Special Requests *
+                    </label>
+                    <textarea
+                        id="guitarDetails"
+                        name="guitarDetails"
+                        rows="5"
+                        minlength="10"
+                        maxlength="500"
+                        placeholder="Describe your pickups, finish, hardware, or other requirements."
+                        required
+                    ></textarea>
+                    <small>Enter between 10 and 500 characters.</small>
+                </div>
+
+                <!-- Contact Permission -->
+                <div class="builder-control">
+                    <label>
+                        <input
+                            type="checkbox"
+                            id="contactPermission"
+                            name="contactPermission"
+                        >
+                        I agree to be contacted about this request.
+                    </label>
+                </div>
+
+                <!-- Validation Feedback -->
+                <div
+                    id="formErrors"
+                    class="error-message"
+                    role="alert"
+                    aria-live="polite"
+                    tabindex="-1"
+                ></div>
+
+                <!-- Success Feedback -->
+                <p
+                    id="formSuccess"
+                    class="success-message"
+                    role="status"
+                    aria-live="polite"
+                ></p>
+
+                <button type="submit">
+                    Submit Guitar Request
+                </button>
+
+            </form>
+
+        </section>
 
         <!-- About Section -->
         <section id="about" class="section-card">
@@ -239,7 +321,6 @@
                 Different bodies, pickups, necks, hardware, and finishes can
                 change both the appearance and sound of a guitar.
             </p>
-
 
             <!-- Guitar Parts Table -->
             <h3>Common Guitar Parts</h3>
@@ -283,7 +364,6 @@
         </section>
 
     </main>
-
 
     <!-- Footer -->
     <footer>
