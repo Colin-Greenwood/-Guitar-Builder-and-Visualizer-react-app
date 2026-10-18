@@ -577,4 +577,3 @@ async function submitGuitarRequest(event) {
 guitarRequestForm.addEventListener("submit", submitGuitarRequest);
 
 });
-```
