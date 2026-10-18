@@ -364,10 +364,6 @@ guitarRequestForm.addEventListener("change", function () {
 });
 
 
-/* ================================= */
-/* Form Submit Event */
-/* ================================= */
-
 guitarRequestForm.addEventListener("submit", function (event) {
 
     // Prevent the page from reloading
@@ -477,7 +473,7 @@ loadPostsButton.addEventListener("click", loadCommunityPosts);
 
 // Load posts when the website opens.
 loadCommunityPosts();
-
+});
 /* ================================= */
 /* Homework 8: POST Guitar Request */
 /* ================================= */
@@ -575,5 +571,3 @@ async function submitGuitarRequest(event) {
 }
 
 guitarRequestForm.addEventListener("submit", submitGuitarRequest);
-
-});
