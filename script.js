@@ -478,5 +478,103 @@ loadPostsButton.addEventListener("click", loadCommunityPosts);
 // Load posts when the website opens.
 loadCommunityPosts();
 
+/* ================================= */
+/* Homework 8: POST Guitar Request */
+/* ================================= */
+
+async function submitGuitarRequest(event) {
+    event.preventDefault();
+
+    formSubmitted = true;
+
+    const errors = updateFormFeedback();
+
+    if (errors.length > 0) {
+        formErrors.focus();
+        return;
+    }
+
+    // Read and normalize the form values.
+    const name = customerName.value.trim();
+    const style = guitarStyle.value;
+    const budget = Number(guitarBudget.value.trim());
+    const requestType = getRequestType();
+    const details = guitarDetails.value.trim();
+
+    // Build the JSON payload.
+    // Do not send the customer's email to this public test API.
+    const guitarRequest = {
+        title: `${name}'s ${style} guitar request`,
+        body: JSON.stringify({
+            guitarStyle: style,
+            budget: budget,
+            requestType: requestType,
+            details: details
+        }),
+        userId: 1
+    };
+
+    const submitButton =
+        guitarRequestForm.querySelector('button[type="submit"]');
+
+    submitButton.disabled = true;
+    formErrors.textContent = "";
+    formSuccess.textContent = "Submitting your guitar request...";
+
+    try {
+        const response = await fetch(
+            "https://jsonplaceholder.typicode.com/posts",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(guitarRequest)
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error("The server could not accept your request.");
+        }
+
+        const savedRequest = await response.json();
+
+        // Display the API response on the page.
+        const result = document.createElement("div");
+        const heading = document.createElement("h3");
+        const description = document.createElement("p");
+        const id = document.createElement("p");
+
+        heading.textContent = savedRequest.title;
+        description.textContent = savedRequest.body;
+        id.textContent = `API Record ID: ${savedRequest.id}`;
+
+        result.append(heading, description, id);
+
+        // Add the result below the success message.
+        formSuccess.replaceChildren();
+        formSuccess.textContent =
+            "Your guitar request was submitted successfully!";
+
+        formSuccess.insertAdjacentElement("afterend", result);
+
+        console.log("POST response:", savedRequest);
+
+        guitarRequestForm.reset();
+        formSubmitted = false;
+
+    } catch (error) {
+        console.error("POST request error:", error);
+
+        formSuccess.textContent =
+            "Your request could not be submitted. Please try again.";
+
+    } finally {
+        submitButton.disabled = false;
+    }
+}
+
+guitarRequestForm.addEventListener("submit", submitGuitarRequest);
+
 });
 ```
