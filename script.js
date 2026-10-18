@@ -422,5 +422,61 @@ guitarRequestForm.addEventListener("submit", function (event) {
     // Reset the submission state
     formSubmitted = false;
 
+/* ================================= */
+/* Homework 8: GET API Request */
+/* ================================= */
+
+const apiStatus = document.querySelector("#apiStatus");
+const postsContainer = document.querySelector("#postsContainer");
+const loadPostsButton = document.querySelector("#loadPostsButton");
+
+async function loadCommunityPosts() {
+    apiStatus.textContent = "Loading posts...";
+    postsContainer.replaceChildren();
+    loadPostsButton.disabled = true;
+
+    try {
+        const response = await fetch(
+            "https://jsonplaceholder.typicode.com/posts?_limit=5"
+        );
+
+        if (!response.ok) {
+            throw new Error("Failed to load posts.");
+        }
+
+        const posts = await response.json();
+
+        const postElements = posts.map(function (post) {
+            const article = document.createElement("article");
+            const heading = document.createElement("h3");
+            const paragraph = document.createElement("p");
+
+            heading.textContent = post.title;
+            paragraph.textContent = post.body;
+
+            article.append(heading, paragraph);
+            return article;
+        });
+
+        postsContainer.replaceChildren(...postElements);
+
+        apiStatus.textContent =
+            `Successfully loaded ${posts.length} posts.`;
+
+    } catch (error) {
+        console.error("GET request error:", error);
+
+        apiStatus.textContent =
+            "Unable to load posts. Please try again.";
+    } finally {
+        loadPostsButton.disabled = false;
+    }
+}
+
+loadPostsButton.addEventListener("click", loadCommunityPosts);
+
+// Load posts when the website opens.
+loadCommunityPosts();
+
 });
 ```
