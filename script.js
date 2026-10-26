@@ -160,414 +160,315 @@ finishType.addEventListener("change", function () {
 });
 
 
-/* ================================= */
-/* Homework 7: Form Elements */
-/* ================================= */
+    /* ================================= */
+    /* Homework 7: Form Elements */
+    /* ================================= */
 
-const guitarRequestForm =
-    document.querySelector("#guitarRequestForm");
+    const guitarRequestForm =
+        document.querySelector("#guitarRequestForm");
 
-const customerName =
-    document.querySelector("#customerName");
+    const customerName =
+        document.querySelector("#customerName");
 
-const customerEmail =
-    document.querySelector("#customerEmail");
+    const customerEmail =
+        document.querySelector("#customerEmail");
 
-const guitarStyle =
-    document.querySelector("#guitarStyle");
+    const guitarStyle =
+        document.querySelector("#guitarStyle");
 
-const guitarBudget =
-    document.querySelector("#guitarBudget");
+    const guitarBudget =
+        document.querySelector("#guitarBudget");
 
-const guitarDetails =
-    document.querySelector("#guitarDetails");
+    const guitarDetails =
+        document.querySelector("#guitarDetails");
 
-const contactPermission =
-    document.querySelector("#contactPermission");
+    const contactPermission =
+        document.querySelector("#contactPermission");
 
-const formErrors =
-    document.querySelector("#formErrors");
+    const formErrors =
+        document.querySelector("#formErrors");
 
-const formSuccess =
-    document.querySelector("#formSuccess");
+    const formSuccess =
+        document.querySelector("#formSuccess");
 
-let formSubmitted = false;
-
-
-/* ================================= */
-/* Get Selected Request Type */
-/* ================================= */
-
-function getRequestType() {
-
-    const selectedRequest = document.querySelector(
-        'input[name="requestType"]:checked'
-    );
-
-    if (selectedRequest === null) {
-        return "";
-    }
-
-    return selectedRequest.value;
-}
+    let formSubmitted = false;
 
 
-/* ================================= */
-/* Validate Form Values */
-/* ================================= */
+    /* ================================= */
+    /* Get Selected Request Type */
+    /* ================================= */
 
-function validateGuitarRequest() {
+    function getRequestType() {
 
-    // Read and normalize the values
-    const name = customerName.value.trim();
-    const email = customerEmail.value.trim();
-    const style = guitarStyle.value;
-    const budgetText = guitarBudget.value.trim();
-    const budget = Number(budgetText);
-    const requestType = getRequestType();
-    const details = guitarDetails.value.trim();
-
-    const errors = [];
-
-    // Rule 1: Required values
-    if (name === "") {
-        errors.push("Please enter your name.");
-    }
-
-    if (email === "") {
-        errors.push("Please enter your email address.");
-    }
-
-    if (style === "") {
-        errors.push("Please choose a guitar style.");
-    }
-
-    if (requestType === "") {
-        errors.push("Please select what you need.");
-    }
-
-    if (details === "") {
-        errors.push("Please describe your guitar request.");
-    }
-
-    // Rule 2: Email format
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (email !== "" && !emailPattern.test(email)) {
-        errors.push(
-            "Please enter a valid email address."
-        );
-    }
-
-    // Rule 3: Budget must be a valid number in range
-    if (budgetText === "") {
-
-        errors.push("Please enter your budget.");
-
-    } else if (
-        !Number.isFinite(budget) ||
-        budget < 100 ||
-        budget > 10000
-    ) {
-
-        errors.push(
-            "Your budget must be between $100 and $10,000."
+        const selectedRequest = document.querySelector(
+            'input[name="requestType"]:checked'
         );
 
-    } else if (!Number.isInteger(budget)) {
-
-        errors.push(
-            "Please enter a whole-dollar budget."
-        );
-
-    }
-
-    // Rule 4: Details must contain enough information
-    if (details !== "" && details.length < 10) {
-        errors.push(
-            "Please provide at least 10 characters of detail."
-        );
-    }
-
-    // Rule 5: Modification requests need extra explanation
-    if (
-        requestType === "Modification" &&
-        details.length < 20
-    ) {
-        errors.push(
-            "For a guitar modification, describe the changes in at least 20 characters."
-        );
-    }
-
-    return errors;
-}
-
-
-/* ================================= */
-/* Display Validation Feedback */
-/* ================================= */
-
-
-function updateFormFeedback() {
-
-    const errors = validateGuitarRequest();
-
-    formErrors.replaceChildren();
-
-    if (errors.length > 0) {
-
-        const heading = document.createElement("p");
-        heading.textContent = "Please correct these errors:";
-        formErrors.appendChild(heading);
-
-        const errorList = document.createElement("ul");
-
-        errors.forEach(function (error) {
-            const item = document.createElement("li");
-            item.textContent = error;
-            errorList.appendChild(item);
-        });
-
-        formErrors.appendChild(errorList);
-
-        formSuccess.textContent = "";
-
-    } else {
-
-        formSuccess.textContent = "";
-    }
-
-    return errors;
-}
-
-
-
-/* ================================= */
-/* Form Input and Change Events */
-/* ================================= */
-
-// Update errors as the user corrects their answers
-guitarRequestForm.addEventListener("input", function () {
-
-    if (formSubmitted) {
-        updateFormFeedback();
-    }
-
-});
-
-guitarRequestForm.addEventListener("change", function () {
-
-    if (formSubmitted) {
-        updateFormFeedback();
-    }
-
-});
-
-
-guitarRequestForm.addEventListener("submit", function (event) {
-
-    // Prevent the page from reloading
-    event.preventDefault();
-
-    formSubmitted = true;
-
-    // Validate all the form values
-    const errors = updateFormFeedback();
-
-    // Stop if any errors were found
-    if (errors.length > 0) {
-
-        formErrors.focus();
-
-        return;
-    }
-
-    // Read and clean the final values
-    const name = customerName.value.trim();
-    const email = customerEmail.value.trim();
-    const style = guitarStyle.value;
-    const budget = Number(guitarBudget.value.trim());
-    const requestType = getRequestType();
-    const details = guitarDetails.value.trim();
-    const permissionGranted = contactPermission.checked;
-
-    // Create the clean payload object
-    const guitarRequest = {
-        customerName: name,
-        customerEmail: email,
-        guitarStyle: style,
-        guitarBudget: budget,
-        requestType: requestType,
-        guitarDetails: details,
-        contactPermission: permissionGranted
-    };
-
-    // Display the object in the browser console
-    console.log("Valid Guitar Request:", guitarRequest);
-
-    // Display success feedback on the page
-    formErrors.textContent = "";
-
-    formSuccess.textContent =
-        "Your guitar request is valid! " +
-        "Your form data has been created successfully.";
-
-    // Reset the form after successful validation
-    guitarRequestForm.reset();
-
-    // Reset the submission state
-    formSubmitted = false;
-
-/* ================================= */
-/* Homework 8: GET API Request */
-/* ================================= */
-
-const apiStatus = document.querySelector("#apiStatus");
-const postsContainer = document.querySelector("#postsContainer");
-const loadPostsButton = document.querySelector("#loadPostsButton");
-
-async function loadCommunityPosts() {
-    apiStatus.textContent = "Loading posts...";
-    postsContainer.replaceChildren();
-    loadPostsButton.disabled = true;
-
-    try {
-        const response = await fetch(
-            "https://jsonplaceholder.typicode.com/posts?_limit=5"
-        );
-
-        if (!response.ok) {
-            throw new Error("Failed to load posts.");
+        if (selectedRequest === null) {
+            return "";
         }
 
-        const posts = await response.json();
-
-        const postElements = posts.map(function (post) {
-            const article = document.createElement("article");
-            const heading = document.createElement("h3");
-            const paragraph = document.createElement("p");
-
-            heading.textContent = post.title;
-            paragraph.textContent = post.body;
-
-            article.append(heading, paragraph);
-            return article;
-        });
-
-        postsContainer.replaceChildren(...postElements);
-
-        apiStatus.textContent =
-            `Successfully loaded ${posts.length} posts.`;
-
-    } catch (error) {
-        console.error("GET request error:", error);
-
-        apiStatus.textContent =
-            "Unable to load posts. Please try again.";
-    } finally {
-        loadPostsButton.disabled = false;
-    }
-}
-
-loadPostsButton.addEventListener("click", loadCommunityPosts);
-
-// Load posts when the website opens.
-loadCommunityPosts();
-});
-/* ================================= */
-/* Homework 8: POST Guitar Request */
-/* ================================= */
-
-async function submitGuitarRequest(event) {
-    event.preventDefault();
-
-    formSubmitted = true;
-
-    const errors = updateFormFeedback();
-
-    if (errors.length > 0) {
-        formErrors.focus();
-        return;
+        return selectedRequest.value;
     }
 
-    // Read and normalize the form values.
-    const name = customerName.value.trim();
-    const style = guitarStyle.value;
-    const budget = Number(guitarBudget.value.trim());
-    const requestType = getRequestType();
-    const details = guitarDetails.value.trim();
 
-    // Build the JSON payload.
-    // Do not send the customer's email to this public test API.
-    const guitarRequest = {
-        title: `${name}'s ${style} guitar request`,
-        body: JSON.stringify({
-            guitarStyle: style,
-            budget: budget,
-            requestType: requestType,
-            details: details
-        }),
-        userId: 1
-    };
+    /* ================================= */
+    /* Validate Form Values */
+    /* ================================= */
 
-    const submitButton =
-        guitarRequestForm.querySelector('button[type="submit"]');
+    function validateGuitarRequest() {
 
-    submitButton.disabled = true;
-    formErrors.textContent = "";
-    formSuccess.textContent = "Submitting your guitar request...";
+        const name = customerName.value.trim();
+        const email = customerEmail.value.trim();
+        const style = guitarStyle.value;
+        const budgetText = guitarBudget.value.trim();
+        const budget = Number(budgetText);
+        const requestType = getRequestType();
+        const details = guitarDetails.value.trim();
 
-    try {
-        const response = await fetch(
-            "https://jsonplaceholder.typicode.com/posts",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(guitarRequest)
+        const errors = [];
+
+        if (name === "") {
+            errors.push("Please enter your name.");
+        }
+
+        if (email === "") {
+            errors.push("Please enter your email address.");
+        }
+
+        if (style === "") {
+            errors.push("Please choose a guitar style.");
+        }
+
+        if (requestType === "") {
+            errors.push("Please select what you need.");
+        }
+
+        if (details === "") {
+            errors.push("Please describe your guitar request.");
+        }
+
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (email !== "" && !emailPattern.test(email)) {
+            errors.push("Please enter a valid email address.");
+        }
+
+        if (budgetText === "") {
+            errors.push("Please enter your budget.");
+        } else if (
+            !Number.isFinite(budget) ||
+            budget < 100 ||
+            budget > 10000
+        ) {
+            errors.push("Your budget must be between $100 and $10,000.");
+        } else if (!Number.isInteger(budget)) {
+            errors.push("Please enter a whole-dollar budget.");
+        }
+
+        if (details !== "" && details.length < 10) {
+            errors.push("Please provide at least 10 characters of detail.");
+        }
+
+        if (requestType === "Modification" && details.length < 20) {
+            errors.push(
+                "For a guitar modification, describe the changes in at least 20 characters."
+            );
+        }
+
+        return errors;
+    }
+
+
+    /* ================================= */
+    /* Display Validation Feedback */
+    /* ================================= */
+
+    function updateFormFeedback() {
+
+        const errors = validateGuitarRequest();
+
+        formErrors.replaceChildren();
+
+        if (errors.length > 0) {
+            const heading = document.createElement("p");
+            heading.textContent = "Please correct these errors:";
+            formErrors.appendChild(heading);
+
+            const errorList = document.createElement("ul");
+
+            errors.forEach(function (error) {
+                const item = document.createElement("li");
+                item.textContent = error;
+                errorList.appendChild(item);
+            });
+
+            formErrors.appendChild(errorList);
+            formSuccess.textContent = "";
+        } else {
+            formSuccess.textContent = "";
+        }
+
+        return errors;
+    }
+
+
+    /* ================================= */
+    /* Form Input and Change Events */
+    /* ================================= */
+
+    guitarRequestForm.addEventListener("input", function () {
+        if (formSubmitted) {
+            updateFormFeedback();
+        }
+    });
+
+    guitarRequestForm.addEventListener("change", function () {
+        if (formSubmitted) {
+            updateFormFeedback();
+        }
+    });
+
+
+    /* ================================= */
+    /* Homework 8: GET API Request */
+    /* ================================= */
+
+    const apiStatus = document.querySelector("#apiStatus");
+    const postsContainer = document.querySelector("#postsContainer");
+    const loadPostsButton = document.querySelector("#loadPostsButton");
+
+    async function loadCommunityPosts() {
+        apiStatus.textContent = "Loading posts...";
+        postsContainer.replaceChildren();
+        loadPostsButton.disabled = true;
+
+        try {
+            const response = await fetch(
+                "https://jsonplaceholder.typicode.com/posts?_limit=5"
+            );
+
+            if (!response.ok) {
+                throw new Error("Failed to load posts.");
             }
-        );
 
-        if (!response.ok) {
-            throw new Error("The server could not accept your request.");
+            const posts = await response.json();
+
+            const postElements = posts.map(function (post) {
+                const article = document.createElement("article");
+                const heading = document.createElement("h3");
+                const paragraph = document.createElement("p");
+
+                heading.textContent = post.title;
+                paragraph.textContent = post.body;
+
+                article.append(heading, paragraph);
+                return article;
+            });
+
+            postsContainer.replaceChildren(...postElements);
+            apiStatus.textContent = `Successfully loaded ${posts.length} posts.`;
+
+        } catch (error) {
+            console.error("GET request error:", error);
+            apiStatus.textContent = "Unable to load posts. Please try again.";
+        } finally {
+            loadPostsButton.disabled = false;
+        }
+    }
+
+    loadPostsButton.addEventListener("click", loadCommunityPosts);
+    loadCommunityPosts();
+
+
+    /* ================================= */
+    /* Homework 8: POST Guitar Request */
+    /* ================================= */
+
+    async function submitGuitarRequest(event) {
+        event.preventDefault();
+
+        formSubmitted = true;
+
+        const errors = updateFormFeedback();
+
+        if (errors.length > 0) {
+            formErrors.focus();
+            return;
         }
 
-        const savedRequest = await response.json();
+        const name = customerName.value.trim();
+        const style = guitarStyle.value;
+        const budget = Number(guitarBudget.value.trim());
+        const requestType = getRequestType();
+        const details = guitarDetails.value.trim();
 
-        // Display the API response on the page.
-        const result = document.createElement("div");
-        const heading = document.createElement("h3");
-        const description = document.createElement("p");
-        const id = document.createElement("p");
+        const guitarRequest = {
+            title: `${name}'s ${style} guitar request`,
+            body: JSON.stringify({
+                guitarStyle: style,
+                budget: budget,
+                requestType: requestType,
+                details: details
+            }),
+            userId: 1
+        };
 
-        heading.textContent = savedRequest.title;
-        description.textContent = savedRequest.body;
-        id.textContent = `API Record ID: ${savedRequest.id}`;
+        const submitButton =
+            guitarRequestForm.querySelector('button[type="submit"]');
 
-        result.append(heading, description, id);
+        submitButton.disabled = true;
+        formErrors.textContent = "";
+        formSuccess.textContent = "Submitting your guitar request...";
 
-        // Add the result below the success message.
-        formSuccess.replaceChildren();
-        formSuccess.textContent =
-            "Your guitar request was submitted successfully!";
+        try {
+            const response = await fetch(
+                "https://jsonplaceholder.typicode.com/posts",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(guitarRequest)
+                }
+            );
 
-        formSuccess.insertAdjacentElement("afterend", result);
+            if (!response.ok) {
+                throw new Error("The server could not accept your request.");
+            }
 
-        console.log("POST response:", savedRequest);
+            const savedRequest = await response.json();
 
-        guitarRequestForm.reset();
-        formSubmitted = false;
+            const result = document.createElement("div");
+            const heading = document.createElement("h3");
+            const description = document.createElement("p");
+            const id = document.createElement("p");
 
-    } catch (error) {
-        console.error("POST request error:", error);
+            heading.textContent = savedRequest.title;
+            description.textContent = savedRequest.body;
+            id.textContent = `API Record ID: ${savedRequest.id}`;
 
-        formSuccess.textContent =
-            "Your request could not be submitted. Please try again.";
+            result.append(heading, description, id);
 
-    } finally {
-        submitButton.disabled = false;
+            formSuccess.replaceChildren();
+            formSuccess.textContent =
+                "Your guitar request was submitted successfully!";
+
+            formSuccess.insertAdjacentElement("afterend", result);
+
+            console.log("POST response:", savedRequest);
+
+            guitarRequestForm.reset();
+            formSubmitted = false;
+
+        } catch (error) {
+            console.error("POST request error:", error);
+            formSuccess.textContent =
+                "Your request could not be submitted. Please try again.";
+
+        } finally {
+            submitButton.disabled = false;
+        }
     }
-}
 
-guitarRequestForm.addEventListener("submit", submitGuitarRequest);
+    guitarRequestForm.addEventListener("submit", submitGuitarRequest);
