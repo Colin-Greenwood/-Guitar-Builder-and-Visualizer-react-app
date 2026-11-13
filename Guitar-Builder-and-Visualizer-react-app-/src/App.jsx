@@ -1,56 +1,50 @@
-import { useState } from "react";
+import { Link, Routes, Route } from "react-router-dom";
 
 import Header from "./Components/Header";
-import FilterControls from "./Components/FilterControls";
-import GuitarPartList from "./Components/GuitarPartList";
 import Footer from "./Components/Footer";
-import { guitarParts } from "./data/guitarData";
+
+import Home from "./Components/Home";
+import ItemList from "./Components/ItemList";
+import ItemDetails from "./Components/ItemDetails";
+
 import "./App.css";
 
 function App() {
-  // State controls which category is displayed
-  const [filter, setFilter] = useState("All");
-
-  // Derived value: filter the guitar parts
-  const filteredParts =
-    filter === "All"
-      ? guitarParts
-      : guitarParts.filter((part) => part.category === filter);
-
-  // Derived value: calculate how many parts are displayed
-  const displayedCount = filteredParts.length;
-
   return (
     <div className="container">
+
       <Header />
 
+      <nav className="navigation">
+        <Link to="/">Home</Link>
+        <Link to="/items">Guitar Parts</Link>
+      </nav>
+
       <main>
-        <section className="hero">
-          <h2>Build Your Dream Guitar</h2>
-          <p>
-            Explore different guitar components and customize
-            your own instrument.
-          </p>
-        </section>
+        <Routes>
+          <Route path="/" element={<Home />} />
 
-        <FilterControls
-          filter={filter}
-          setFilter={setFilter}
-        />
+          <Route path="/items" element={<ItemList />} />
 
-        <section className="builder">
-          <div className="results-header">
-            <h2>Available Guitar Parts</h2>
-            <p>
-              Showing {displayedCount} guitar parts
-            </p>
-          </div>
+          <Route path="/items/:id" element={<ItemDetails />} />
 
-          <GuitarPartList parts={filteredParts} />
-        </section>
+          <Route
+            path="*"
+            element={
+              <section className="part-card">
+                <h2>Page Not Found</h2>
+                <p>The page you requested does not exist.</p>
+                <Link to="/" className="nav-button">
+                  Return Home
+                </Link>
+              </section>
+            }
+          />
+        </Routes>
       </main>
 
       <Footer />
+
     </div>
   );
 }
