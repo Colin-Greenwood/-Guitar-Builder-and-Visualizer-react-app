@@ -1,129 +1,49 @@
 
-const express = require("express");
-const cors = require("cors");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-require("dotenv").config();
+import express from "express";
+import cors from "cors";
 
 const app = express();
+const PORT = 5000;
 
-app.use(cors({
-  origin: process.env.FRONTEND_ORIGIN
-}));
-
+app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 4000;
+// Test route
+app.get("/", (req, res) => {
+  res.json({ message: "Guitar Builder Backend is running!" });
+});
 
-// Demo account for the assignment
-const demoUser = {
-  username: process.env.DEMO_USERNAME,
-  passwordHash: bcrypt.hashSync(
-    process.env.DEMO_PASSWORD,
-    12
-  ),
-  role: "user"
-};
-
-// Authentication middleware
-function authenticateToken(req, res, next) {
-  const authHeader = req.headers.authorization;
-
-  const token = authHeader && authHeader.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({
-      message: "Authentication required."
-    });
-  }
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      return res.status(401).json({
-        message: "Invalid or expired token."
-      });
-    }
-
-    req.user = user;
-    next();
-  });
-}
-
-// Login endpoint
-app.post("/api/auth/login", async (req, res) => {
+// Login route
+app.post("/api/login", (req, res) => {
   const { username, password } = req.body;
 
-  if (!username || !password) {
-    return res.status(400).json({
-      message: "Username and password are required."
+  if (username === "student" && password === "password123") {
+    return res.json({
+      success: true,
+      message: "Login successful!",
+      token: "guitar-builder-demo-token"
     });
   }
 
-  const passwordMatches = await bcrypt.compare(
-    password,
-    demoUser.passwordHash
-  );
-
-  if (
-    username !== demoUser.username ||
-    !passwordMatches
-  ) {
-    return res.status(401).json({
-      message: "Incorrect username or password."
-    });
-  }
-
-  const token = jwt.sign(
-    {
-      username: demoUser.username,
-      role: demoUser.role
-    },
-    process.env.JWT_SECRET,
-    { expiresIn: "1h" }
-  );
-
-  res.status(200).json({
-    message: "Login successful!",
-    token,
-    user: {
-      username: demoUser.username,
-      role: demoUser.role
-    }
+  res.status(401).json({
+    success: false,
+    message: "Invalid username or password"
   });
 });
 
-// Protected profile endpoint
-app.get(
-  "/api/protected/profile",
-  authenticateToken,
-  (req, res) => {
-    res.status(200).json({
-      message: "You accessed protected guitar builder data!",
-      user: req.user
+// Protected route
+app.get("/api/protected", (req, res) => {
+  const authHeader = req.headers.authorization;
+
+  if (authHeader !== "Bearer guitar-builder-demo-token") {
+    return res.status(401).json({
+      message: "Unauthorized. Please log in."
     });
   }
-);
 
-// Admin-only endpoint for testing 403 errors
-app.get(
-  "/api/admin/test",
-  authenticateToken,
-  (req, res) => {
-    if (req.user.role !== "admin") {
-      return res.status(403).json({
-        message: "You do not have permission to access this page."
-      });
-    }
-
-    res.status(200).json({
-      message: "Welcome, administrator!"
-    });
-  }
-);
-
-// Basic server test
-app.get("/", (req, res) => {
-  res.send("Custom Guitar Builder Backend is running!");
+  res.json({
+    message: "Welcome! You accessed the protected guitar builder data."
+  });
 });
 
 app.listen(PORT, () => {

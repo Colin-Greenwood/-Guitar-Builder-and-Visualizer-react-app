@@ -41,3 +41,52 @@
     flex-wrap: wrap;
   }
 }
+
+/* Authentication */
+.auth-status {
+  text-align: center;
+  padding: 12px;
+  background: #e8f5e9;
+  border-radius: 8px;
+  margin: 15px 0;
+}
+
+.part-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  margin: 20px auto;
+}
+
+.part-card form input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.part-card form button {
+  padding: 12px;
+  background: #222;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.part-card form button:hover {
+  background: #444;
+}
+
+.part-card form button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #c62828;
+  text-align: center;
+  font-weight: bold;
+}
