@@ -1,6 +1,4 @@
 
-/* Custom Guitar Builder */
-
 * {
   box-sizing: border-box;
 }
@@ -8,113 +6,157 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #181818;
-  color: #f5f5f5;
+  background: #171717;
+  color: #eeeeee;
 }
 
 .container {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  text-align: center;
   padding: 30px 20px;
+  background: #242424;
+  border-bottom: 2px solid #c49a50;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 36px;
+}
+
+.header p {
+  color: #bbbbbb;
+}
+
+main {
+  width: 90%;
+  max-width: 1100px;
+  margin: 0 auto;
+  flex: 1;
 }
 
 .hero {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 40px 20px;
   text-align: center;
-  background: #292929;
-  border-bottom: 4px solid #c0392b;
-  border-radius: 12px;
+  padding: 45px 15px;
 }
 
-.hero h1 {
-  margin-top: 0;
-  font-size: 40px;
+.hero h2 {
+  font-size: 30px;
+  color: #d8ad65;
 }
 
 .hero p {
-  color: #ddd;
-  line-height: 1.6;
+  color: #cccccc;
+}
+
+.filter-controls {
+  background: #242424;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+}
+
+.filter-controls h2 {
+  margin-top: 0;
+}
+
+.filter-controls label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.filter-controls select {
+  padding: 12px;
+  width: 100%;
+  max-width: 300px;
+  background: #333333;
+  color: white;
+  border: 1px solid #c49a50;
+  border-radius: 5px;
 }
 
 .builder {
-  max-width: 900px;
-  margin: 30px auto;
-  padding: 25px;
-  background: #292929;
-  border-radius: 12px;
+  margin-bottom: 40px;
 }
 
-.builder h2,
-.part-card h4 {
-  color: #ff796e;
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-label {
-  display: block;
-  margin-bottom: 8px;
-}
-
-input {
-  width: 100%;
-  max-width: 400px;
-  padding: 12px;
-  font-size: 16px;
-  color: #222;
-  background: #fff;
-  border: 1px solid #777;
-  border-radius: 6px;
-}
-
-.message {
-  color: #ffb4ab;
-  margin: 20px 0;
+.results-header p {
+  color: #d8ad65;
 }
 
 .parts-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
 }
 
 .part-card {
-  padding: 18px;
-  background: #383838;
-  border-left: 4px solid #c0392b;
-  border-radius: 8px;
+  background: #292929;
+  padding: 22px;
+  border-radius: 10px;
+  border: 1px solid #444444;
+  transition: transform 0.2s, border-color 0.2s;
 }
 
-.part-card h4 {
-  margin-top: 0;
+.part-card:hover {
+  transform: translateY(-4px);
+  border-color: #c49a50;
 }
 
-.part-card p {
-  color: #ddd;
-  line-height: 1.5;
+.part-card h3 {
+  color: #e2b96f;
 }
 
-footer {
-  padding: 15px;
+.category {
+  color: #aaaaaa;
+  font-size: 14px;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: bold;
+  color: #d8ad65;
+}
+
+.footer {
   text-align: center;
-  color: #bbb;
+  background: #242424;
+  padding: 20px;
+  color: #aaaaaa;
+  border-top: 2px solid #c49a50;
 }
 
-/* Mobile layout */
-@media (max-width: 600px) {
-  .container {
-    padding: 15px 10px;
+@media (max-width: 750px) {
+  .parts-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
-  .hero h1 {
-    font-size: 29px;
+  .header h1 {
+    font-size: 28px;
   }
+}
 
-  .builder {
-    padding: 18px;
-  }
-
+@media (max-width: 500px) {
   .parts-grid {
     grid-template-columns: 1fr;
   }
-}
 
+  .results-header {
+    display: block;
+  }
+
+  .hero h2 {
+    font-size: 24px;
+  }
+}

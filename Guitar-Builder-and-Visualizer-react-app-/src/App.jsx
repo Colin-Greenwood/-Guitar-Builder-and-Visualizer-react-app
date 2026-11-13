@@ -1,60 +1,58 @@
-import { useState } from 'react'
-import { guitarParts, getGuitarMessage } from './guitarData'
-import './App.css'
+import { useState } from "react";
+
+import Header from "./Components/Header";
+import FilterControls from "./Components/FilterControls";
+import GuitarPartList from "./Components/GuitarPartList";
+import Footer from "./Components/Footer";
+import { guitarParts } from "./data/guitarData";
+import "./App.css";
 
 function App() {
-const [guitarName, setGuitarName] = useState('')
+  // State controls which category is displayed
+  const [filter, setFilter] = useState("All");
 
-return (
-<main className="container">
-<header className="hero">
-<h1>Custom Guitar Builder</h1>
-<p>
-Design your dream guitar by exploring different
-parts, styles, and sounds.
-</p>
-</header>
+  // Derived value: filter the guitar parts
+  const filteredParts =
+    filter === "All"
+      ? guitarParts
+      : guitarParts.filter((part) => part.category === filter);
 
-  <section className="builder">
-    <h2>Build Your Dream Guitar</h2>
+  // Derived value: calculate how many parts are displayed
+  const displayedCount = filteredParts.length;
 
-    <p>
-      Create a guitar that matches your personal style
-      and the sound you want to play.
-    </p>
+  return (
+    <div className="container">
+      <Header />
 
-    <label htmlFor="guitarName">Name your guitar:</label>
+      <main>
+        <section className="hero">
+          <h2>Build Your Dream Guitar</h2>
+          <p>
+            Explore different guitar components and customize
+            your own instrument.
+          </p>
+        </section>
 
-    <input
-      id="guitarName"
-      type="text"
-      placeholder="Enter a guitar name"
-      value={guitarName}
-      onChange={(event) => setGuitarName(event.target.value)}
-    />
+        <FilterControls
+          filter={filter}
+          setFilter={setFilter}
+        />
 
-    <p className="message">
-      {getGuitarMessage(guitarName)}
-    </p>
+        <section className="builder">
+          <div className="results-header">
+            <h2>Available Guitar Parts</h2>
+            <p>
+              Showing {displayedCount} guitar parts
+            </p>
+          </div>
 
-    <h3>Explore Guitar Parts</h3>
+          <GuitarPartList parts={filteredParts} />
+        </section>
+      </main>
 
-    <div className="parts-grid">
-      {guitarParts.map((part) => (
-        <article className="part-card" key={part.name}>
-          <h4>{part.name}</h4>
-          <p>{part.description}</p>
-        </article>
-      ))}
+      <Footer />
     </div>
-  </section>
-
-  <footer>
-    <p>Custom Guitar Builder | Design Your Sound</p>
-  </footer>
-</main>
-
-)
+  );
 }
 
-export default App
+export default App;
